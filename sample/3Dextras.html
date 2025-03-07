@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>A-Frame: Quest movement and interaction</title>
+    <meta name="description" content="Moving around an A-Frame scene with Quest touch controllers.">
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="../library/aframe-environment-component.js"></script>
+    <script src="../library/controller-listener.js"></script>
+    <script src="../library/player-move.js"></script>
+    <script src="../library/raycaster-extras.js"></script>
+    <script src="../library/aframe-master.min.js"></script>
+</head>
+
+<body>
+
+<script>
+// if raycaster is pointing at this object, press trigger to change color
+AFRAME.registerComponent("raycaster-color-change", {
+    init: function () 
+    {
+        this.colors = ["red", "orange", "yellow", "green", "blue", "violet"];
+
+        this.controllerData = document.querySelector("#controller-data").components["controller-listener"];        
+        this.hoverData      = this.el.components["raycaster-target"];
+    },
+
+    tick: function()
+    {
+        if (this.hoverData.hasFocus && this.controllerData.rightTrigger.pressed )
+        {
+            let index = Math.floor( this.colors.length * Math.random() );
+            let color = this.colors[index];
+            this.el.setAttribute("color", color);
+        }
+        
+        if (!this.hoverData.hasFocus || this.controllerData.rightTrigger.released)
+        {
+            this.el.setAttribute("color", "#CCCCCC");
+        }
+    }
+});
+
+
+</script>
+
+<a-scene environment="preset: default;" renderer="antialias: true;">
+    <a-entity
+    position="0 3 -3.5"
+    text="color: white; align: center; width: 10; font: kelsonsans;
+          value: WELCOME TO VIRTUAL TOUR : KRUSAE MOSJID"
+  ></a-entity>
+    
+    <a-assets>
+        <img id="gradient" src="fade.png" />
+    </a-assets>
+
+    <a-sky 
+        color = "#000337">
+    </a-sky>
+
+    <!-- use a simple mesh for raycasting/navigation -->
+    <a-entity 
+        id="player" 
+        position="0 0 2" 
+        player-move="controllerListenerId: #controller-data;
+                     navigationMeshClass: groundPlane;">
+        
+        <a-camera></a-camera>
+    
+        <a-entity 
+            id="controller-data" 
+            controller-listener="leftControllerId:  #left-controller; 
+                                 rightControllerId: #right-controller;">
+        </a-entity>
+
+        <a-entity 
+            id="left-controller"
+            oculus-touch-controls="hand: left">
+        </a-entity>
+
+        <!-- experiment with raycasting interval; slight performance improvement but jittery appearance in world -->
+        <a-entity
+            id="right-controller"
+            oculus-touch-controls="hand: right"
+            raycaster="objects: .raycaster-target; interval: 0;"
+            raycaster-extras="controllerListenerId: #controller-data; 
+                              beamImageSrc: #gradient; beamLength: 0.5;">
+        </a-entity>
+
+    </a-entity>
+	<a-assets>
+		<!-- all model files from Poly by Google 
+			 (with texture modifications to reduce file size and increase brightness) -->
+	    <a-asset-item id="k1" src="Thubtod1.glb"></a-asset-item>
+	</a-assets>
+	
+	<a-entity gltf-model="#k1" 
+		position = "0.1 0.5 -2.5"
+		rotation="-1 90 3"
+		scale="1 1 1">
+	</a-entity>
+</a-scene>
+
+</body>
+</html>

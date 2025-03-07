@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inplayo.com – A-Frame Switch VR & Page</title>
+    <meta name="description" content="WebXR A-Frame Component. Ability to open page url in iframe, with switching view context, without page reload. This is demo project using A-Frame component">
+    <meta name="robots" content="noindex,nofollow"/>
+
+    
+    
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage"
+        content="https://inplayo.com/wp-content/themes/inplayo/assets/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans+Thai:wght@100..900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-environment-component@1.3.0/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="../library/aframe-open-page-iframe.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@0.5.1/dist/aframe-text-geometry-component.min.js"></script>
+    <style>
+        .mali1 {
+  font-family: "Mali", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+a-scene {
+    font-family: "Mali", serif;
+  font-weight: 200;
+  font-style: normal;
+}
+    </style>
+</head>
+
+<body>
+<div id="myEmbeddedScene">
+   <a-scene environment renderer="antialias: true; colorManagement: true;" camera-position cursor="rayOrigin: mouse" raycaster="far: 100; objects: .raycastable;">
+        <a-assets>
+            <img response-type="arraybuffer" id="inplayoTex" src="L.png">
+            <img response-type="arraybuffer" id="shopTex" src="play.png" >
+            <a-asset-item id="optimerBoldFont" src="https://raw.githubusercontent.com/wutthipongWebGIS/Pattaniculture/refs/heads/main/THSarabunNewBold2.json"></a-asset-item>
+            <a-mixin id="panel" material="shader:flat;transparent:true;" position="0 1.25 0" look-at="[camera]">
+            </a-mixin>
+        </a-assets>
+        <!-- Fonttest -->
+        <a-entity text="value: What's up"  position="0 2-6"></a-entity>
+        <a-entity text="value: Dog?; font: #optimerBoldFont"  position="0 3 -6"></a-entity>
+
+
+               <!-- camera & controls -->
+        <a-entity id="rig" movement-controls="constrainToNavMesh: true">
+            <a-entity camera position="0 1.6 0" look-controls>
+            </a-entity>
+            <a-entity id="leftHand" laser-controls="hand: left" raycaster="far: 100; objects: .raycastable;"></a-entity>
+            <a-entity id="rightHand" laser-controls="hand: right" raycaster="far: 100; objects: .raycastable;">
+            </a-entity>
+        </a-entity>
+      
+        <a href="text_book.html"  image="#shopTex"></a>
+        <a-entity id="description" position="0 6 -6">
+            <a-text value="WEBGIS : CULTURE VIRTUAL REALITY" align="center"></a-text>
+        </a-entity>
+
+        <a-entity id="panels" position="1 0.5 -4">
+           <a-plane id="open1" mixin="panel" material="src:#shopTex;" class="raycastable"
+                    animation__scaleUp="startEvents:mouseenter; property: scale; to: 1.2 1.2 1.2; dur: 250;"
+                    animation__scaleDown="startEvents:mouseleave; property: scale; to: 1 1 1; dur: 250;"
+                    ></a-plane>
+          </a-entity>
+        <a-entity id="panels2" position="-1 0.5 -4">
+           <a-plane id="open2" mixin="panel" material="src:#inplayoTex;" class="raycastable"
+                    animation__scaleUp="startEvents:mouseenter; property: scale; to: 1.2 1.2 1.2; dur: 250;"
+                    animation__scaleDown="startEvents:mouseleave; property: scale; to: 1 1 1; dur: 250;"
+                    ></a-plane>
+          </a-entity>
+    </a-scene>
+</div>
+<script>
+    document
+        .querySelector("#open1")
+        .addEventListener("click", e =>{
+            location.href = "3model.html";
+        });
+        document
+        .querySelector("#open2")
+        .addEventListener("click", e =>{
+            location.href = "3DYarang.html";
+        });
+</script>
+</body>
+
+</html>
